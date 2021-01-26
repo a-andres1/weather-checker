@@ -25,19 +25,20 @@ function createElements() {
     var dailyWeatherBody = $("<div>").addClass("card-body");
     // appending to dailyWeather for now
     $(dailyWeather).append(dailyWeatherBody);
-// creating div for forecast cards
+    // creating div for forecast cards
     var forecastDiv = $("<div>").addClass("row").attr("id", "forecast");
     // appending to the main div
     $("main").append(forecastDiv);
-// creating title for forecast div and cards
-var forecastTitle = $("<h2>").text("Five Day Forecast");
-// appending
+    // creating title for forecast div and cards
+    var forecastTitle = $("<h2>").text("Five Day Forecast");
+    // appending
     $("#forecast").append(forecastTitle)
-
-
     // checking to make sure this function is running
     console.log("createElemnts ran");
 }
+
+
+// ajax calls go here
 
 
 
