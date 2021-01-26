@@ -18,13 +18,22 @@ function createElements() {
     // currently appended, since I don't know what this is going to look like, we'll leave it for now and once the list is work, we'll correct from there. 
     $(searchBar).append(searchedCities);
     // creating card for daily weather forecasts
-    var dailyWeather = $("<div>").addClass("card");
+    var dailyWeather = $("<div>").addClass("card row");
     // prepending to the body - for now - this is showing up first. I might create some divs to attach things to actually... 
     $("main").append(dailyWeather);
     // creating div for card body text for daily weather card
     var dailyWeatherBody = $("<div>").addClass("card-body");
     // appending to dailyWeather for now
     $(dailyWeather).append(dailyWeatherBody);
+// creating div for forecast cards
+    var forecastDiv = $("<div>").addClass("row").attr("id", "forecast");
+    // appending to the main div
+    $("main").append(forecastDiv);
+// creating title for forecast div and cards
+var forecastTitle = $("<h2>").text("Five Day Forecast");
+// appending
+    $("#forecast").append(forecastTitle)
+
 
     // checking to make sure this function is running
     console.log("createElemnts ran");
