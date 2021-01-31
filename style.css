@@ -7,4 +7,15 @@
     float: left;
 }
 
+.low{
+    background-color: green;
+}
+
+.meh{
+    background-color: yellow;
+}
+
+.uhoh{
+    background-color: red;
+}
 

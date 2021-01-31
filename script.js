@@ -56,6 +56,7 @@ $("#save").on("click", "button", function () {
     // call ajax function
     callWeather(searchMe);
     callForecast(searchMe);
+    uvIndex(searchMe);
 });
 
 
@@ -112,6 +113,13 @@ function callWeather(savedCity) {
         dailyTitle.append(dailyImg);
         // append text
         $("#daily-card").append(dailyTitle, dailyTemp, dailyWind, dailyHumd);
+
+        var lat = response.coord.lat;
+        var long = response.coord.lon;
+
+        console.log(lat,long);
+
+        uvIndex(lat,long);
     })
 };
 
@@ -155,6 +163,52 @@ function callForecast(savedCity) {
         }
     })
 };
+
+function uvIndex(lat, long){
+    var uvURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + long + "&appid=6e582d888e364585113e2789fcc5b0e6"
+
+    $.ajax({
+        url: uvURL,
+        method: "GET",
+        dataType: "json"
+    }).then(function (response) {
+        var currentUV = $("<button>").text(response.current.uvi);
+        $("#daily-card").append(currentUV);
+        console.log(currentUV.text());
+
+        for (i = 1; i < 6; i++) {
+        var futureUV = $("<button>").text(response.daily[i].uvi);
+        $("#forecast-card" + [i]).append(futureUV);
+        if (futureUV.text() <= 3 ){
+            futureUV.addClass("low")
+        }
+
+        else if (futureUV.text() >= 6){
+            futureUV.addClass("uhoh")
+        }
+
+        else {
+            futureUV.addClass("meh")
+        }
+        }
+
+        if (currentUV.text() <= 3 ){
+            currentUV.addClass("low")
+        }
+
+        else if (currentUV.text() >= 6){
+            currentUV.addClass("uhoh")
+        }
+
+        else {
+            currentUV.addClass("meh")
+        }
+
+        
+        
+    
+});
+}
 
 
 
