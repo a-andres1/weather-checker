@@ -12,7 +12,8 @@ $("#button-addon2").click(function () {
     // gets value from the search bar
     var savedCity = $("#data-list").val();
     console.log(savedCity);
-    localStorage.setItem("save", savedCity);
+    // localStorage.setItem("save", savedCity);
+
     // var cityName = []
     // cityName = savedCity
     // console.log("city name " + cityName
@@ -24,14 +25,16 @@ $("#button-addon2").click(function () {
     addToList(savedCity);
     // to clear search box
     $("#data-list").val("");
-})
+});
+
 
 // enter button handler - because of the way I wrote these functions I had to repeat everything. I would figure out a way to do this differently next time. 
 $(document).on('keypress', function (e) {
     if (e.which == 13) {
         var savedCity = $("#data-list").val();
         console.log(savedCity);
-        localStorage.setItem("save", savedCity);
+        // localStorage.setItem("save", savedCity);
+
         $("main").empty();
         // calling functions
         createElements();
@@ -44,9 +47,22 @@ $(document).on('keypress', function (e) {
     }
 });
 
+// searches based off the list
+$("#save").on("click", "button", function () {
+    //   sets variable for targeted button
+    var searchMe = $(this).text();
+    $("main").empty();
+    createElements(searchMe);
+    // call ajax function
+    callWeather(searchMe);
+    callForecast(searchMe);
+});
+
+
+
 // adds cities to list
 function addToList(savedCity) {
-    var cityList = $("<button>").addClass("list-group-item list-group-item-action").text(savedCity)
+    var cityList = $("<button>").addClass("list-group-item list-group-item-action").attr({ type: "button", id: "here" }).text(savedCity);
     $("#save").append(cityList);
 }
 
@@ -135,7 +151,7 @@ function callForecast(savedCity) {
             // forecast img
             var forecastImg = $("<img>").addClass("title-img").attr("src", "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png")
             $(forecastTitle).append(forecastImg)
-            console.log(forecastTemp)
+
         }
     })
 };
