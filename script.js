@@ -66,20 +66,16 @@ $("#button-addon2").click(function () {
             console.log(response);
             // city name
             var dailyTitle = $("<h2>").addClass("card-title").text(response.name);
-            // append city name to card
-            $(".card-body").append(dailyTitle);
             // daily temp
             var dailyTemp = $("<p>").addClass("card-text").text("Curent Temp: " + response.main.temp + " F");
-            // append temp
-            $(".card-body").append(dailyTemp);
             // daily wind
             var dailyWind = $("<p>").addClass("card-text").text("Wind Speed: " + response.wind.speed + " MPH");
-            // append wind
-            $(".card-body").append(dailyWind);
             // daily humidity
             var dailyHumd = $("<p>").addClass("card-text").text("Humidity: " + response.main.humidity + "%");
-            // append humidity
-            $(".card-body").append(dailyHumd);
+            // append text
+            $(".card-body").append(dailyTitle,dailyTemp,dailyWind,dailyHumd);
+
+
 
            
         })
