@@ -18,7 +18,7 @@ function createElements() {
     // prepending to the body - for now - this is showing up first. I might create some divs to attach things to actually... 
     $("main").append(dailyWeather);
     // creating div for card body text for daily weather card
-    var dailyWeatherBody = $("<div>").addClass("card-body");
+    var dailyWeatherBody = $("<div>").addClass("card-body").attr("id", "daily-card");
     // appending to dailyWeather for now
     $(dailyWeather).append(dailyWeatherBody);
     // creating div for forecast cards
@@ -80,7 +80,7 @@ $("#button-addon2").click(function () {
             // append img
             dailyTitle.append(dailyImg);
             // append text
-            $(".card-body").append(dailyTitle, dailyTemp, dailyWind, dailyHumd);
+            $("#daily-card").append(dailyTitle, dailyTemp, dailyWind, dailyHumd);
 
         })
 
@@ -93,6 +93,10 @@ $("#button-addon2").click(function () {
 
         }).then(function (response) {
             console.log(response);
+            // forecast date
+            var dailyTitle = $("<h2>").addClass("card-title").text(response.list[0].dt_txt);
+            $(".card-body").append(dailyTitle)
+
 
 
 
