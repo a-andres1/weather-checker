@@ -6,15 +6,8 @@ $(document).ready(function () {
 
 // function to generate elements dynamically
 function createElements() {
-    // creating datalist
-    var citiesList = $("<datalist>").attr("id", "datalistOptions");
-    // will need to tell this to create options with values of the cities that have been entered. 
-    // currently appended, since I don't know what this is going to look like, we'll leave it for now and once the list is work, we'll correct from there. 
-    $("aside").append(citiesList);
-    // list
-    var searchedCities = $("<option>")
     // creating card for daily weather forecasts
-    var dailyWeather = $("<div>").addClass("card row");
+    var dailyWeather = $("<div>").addClass("card row card-row");
     // prepending to the body - for now - this is showing up first. I might create some divs to attach things to actually... 
     $("main").append(dailyWeather);
     // creating div for card body text for daily weather card
@@ -29,114 +22,145 @@ function createElements() {
     var forecastTitle = $("<h2>").text("Five Day Forecast");
     // appending
     $("#forecast").append(forecastTitle)
-    
 
+    // just checkin'
     console.log("createElemnts ran");
 }
 
-
-// local storage
-$("#button-addon2").click(function () {
-    createElements();
+// clicking the button should trigger local storage and ajax calls
+$("button").click(function () {
     $(this);
     // gets value from the search bar
     var savedCity = $("#data-list").val();
     console.log(savedCity);
-    // localStorage.setItem("save", savedCity);
-    // searchedCities.val(savedCity);
-    // creates variable for use in query URL
-    var cityName = savedCity
-    // concats query urls
-    var dailyURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
-    var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
-    var todaysDate = new Date().toLocaleDateString();
-
+    localStorage.setItem("save", savedCity);
+    // var cityName = []
+    // cityName = savedCity
+    // console.log("city name " + cityName
+    $("main").empty();
+    createElements();
     // call ajax function
-    callWeather();
-    callForecast();
-    // fucntion for daily weather
-    function callWeather() {
-        $.ajax({
-            url: dailyURL,
-            method: "GET",
-            dataType: "json"
-
-        }).then(function (response) {
-            console.log(response);
-            // city name
-            var dailyTitle = $("<h2>").addClass("card-title").text(response.name + " " + todaysDate);
-            // get image for title
-            var dailyImg = $("<img>").addClass("title-img").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png")
-            // daily temp
-            var dailyTemp = $("<p>").addClass("card-text").text("Curent Temp: " + response.main.temp + " °F");
-            // daily wind
-            var dailyWind = $("<p>").addClass("card-text").text("Wind Speed: " + response.wind.speed + " MPH");
-            // daily humidity
-            var dailyHumd = $("<p>").addClass("card-text").text("Humidity: " + response.main.humidity + "%");
-            // append img
-            dailyTitle.append(dailyImg);
-            // append text
-            $("#daily-card").append(dailyTitle, dailyTemp, dailyWind, dailyHumd);
-
-        })
-
-    };
-    function callForecast() {
-        $.ajax({
-            url: forecastURL,
-            method: "GET",
-            dataType: "json"
-
-        }).then(function (response) {
-            console.log(response);
-            // forecast date
-
-                // for loop
-
-    for (i = 1; i < 6; i++) {
-    
-        // var tomorrow = new Date();
-        // tomorrow.setDate(new Date().getDate() + i);
-        // console.log(tomorrow)
-
-        var tom2 = response.list[(i * 7)].dt_txt.substring(5,10);
-        console.log(tom2);
-        
-         
-        var column = $("<div>").addClass("col-md-2")
-        $("#forecast").append(column)
-        // create card and append
-        var forecastCard = $("<div>").addClass("card");
-    $(column).append(forecastCard);
-        //  // create card body and append
-         var forecastCardBody = $("<div>").addClass("card-body").attr("id", "forecast-card" + [i]);
-         $(forecastCard).append(forecastCardBody)
-         var forecastTitle = $("<h4>").addClass("card-title").text(tom2);
-         $("#forecast-card" + [i]).append(forecastTitle);
-       
-    }
-           
-
-        })
-
-    };
-
-
+    callWeather(savedCity);
+    callForecast(savedCity);
+    addToList(savedCity);
+    // to clear search box
+    $("#data-list").val("");
 
 })
 
 
+// enter button handler - because of the way I wrote these functions I had to repeat everything. I would figure out a way to do this differently next time. 
+$(document).on('keypress', function (e) {
+    if (e.which == 13) {
+        var savedCity = $("#data-list").val();
+        console.log(savedCity);
+        localStorage.setItem("save", savedCity);
+        $("main").empty();
+        // calling functions
+        createElements();
+        callForecast(savedCity);
+        callWeather(savedCity);
+        addToList(savedCity);
+        // to clear search box
+        $("#data-list").val("");
+
+    }
+});
+
+function addToList(savedCity){
+    var cityList = $("<button>").addClass("list-group-item list-group-item-action").text(savedCity)
+    $("#save").append(cityList);
+}
 
 
 
-var savedText = $()
+
+// concats query urls
+var todaysDate = new Date().toLocaleDateString();
 
 
+// fucntion for daily weather
+function callWeather(savedCity) {
 
-// ajax calls go here
+    $("#daily-card").empty();
+    var dailyURL = "https://api.openweathermap.org/data/2.5/weather?q=" + savedCity + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
+
+    $.ajax({
+        url: dailyURL,
+        method: "GET",
+        dataType: "json"
+
+    }).then(function (response) {
+        console.log(response);
+        // city name
+        var dailyTitle = $("<h2>").addClass("card-title").text(response.name + " " + todaysDate);
+        // get image for title
+        var dailyImg = $("<img>").addClass("title-img").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png")
+        // daily temp
+        var dailyTemp = $("<p>").addClass("card-text").text("Curent Temp: " + response.main.temp + " °F");
+        // daily wind
+        var dailyWind = $("<p>").addClass("card-text").text("Wind Speed: " + response.wind.speed + " MPH");
+        // daily humidity
+        var dailyHumd = $("<p>").addClass("card-text").text("Humidity: " + response.main.humidity + "%");
+        // append img
+        dailyTitle.append(dailyImg);
+        // append text
+        $("#daily-card").append(dailyTitle, dailyTemp, dailyWind, dailyHumd);
+
+    })
+
+};
+function callForecast(savedCity) {
+
+    
+    var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + savedCity + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
+
+    $.ajax({
+        url: forecastURL,
+        method: "GET",
+        dataType: "json"
+
+    }).then(function (response) {
+        console.log(response);
+        // forecast date
+
+        // for loop for dates and forecast info
+    
+       
+        for (i = 1; i < 6; i++) {
+
+            // scrolled along the DOM to find this, hadn't used substring before, but it works!
+            var tomorrow = response.list[(i * 7)].dt_txt.substring(5, 10);
+            // had to make colums so that the cards didn't just line up on top of each other. I bet that's what's wrong with my other dynamic elements. Might try that later. 
+            var column = $("<div>").addClass("col-md-2")
+            $("#forecast").append(column)
+            // create card and append
+            var forecastCard = $("<div>").addClass("card");
+            $(column).append(forecastCard);
+            //  // create card body and append
+            var forecastCardBody = $("<div>").addClass("card-body").attr("id", "forecast-card" + [i]);
+            $(forecastCard).append(forecastCardBody)
+            var forecastTitle = $("<h4>").addClass("card-title").text(tomorrow);
+            $("#forecast-card" + [i]).append(forecastTitle);
+            // temps
+            var forecastTemp = $("<p>").text("Temp: " + response.list[(i * 7)].main.temp + "°F ");
+            // append temps
+            $("#forecast-card" + [i]).append(forecastTemp);
+            // 
+            var forecastHumd = response.list[(i * 7)].main.humidity;
+            // append temps
+            $("#forecast-card" + [i]).append("Humidity: " + forecastHumd + "%");
+            // forecast img
+            var forecastImg = $("<img>").addClass("title-img").attr("src", "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png")
+            $(forecastTitle).append(forecastImg)
+            console.log(forecastTemp)
+
+        }
 
 
+    })
 
+};
 
 
 
@@ -178,3 +202,7 @@ var savedText = $()
     //  });
     //  // appends button
     //  $(searchBar).append(searchBtn);
+    // it works, just uneccessary
+    // var tomorrow = new Date();
+        // tomorrow.setDate(new Date().getDate() + i);
+        // console.log(tomorrow)
