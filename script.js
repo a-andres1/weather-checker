@@ -52,8 +52,8 @@ $("#button-addon2").click(function () {
     // creates variable for use in query URL
     var cityName = savedCity
     // concats query urls
-    var dailyURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
-    var forecastURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
+    var dailyURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
+    var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
     var todaysDate = new Date().toLocaleDateString();
     // call ajax function
     callWeather();
