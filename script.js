@@ -3,32 +3,11 @@ $(document).ready(function () {
     console.log("ready!");
 });
 
-
-// function to generate elements dynamically
-function createElements() {
-    // creating card for daily weather forecasts
-    var dailyWeather = $("<div>").addClass("card row card-row");
-    // prepending to the body - for now - this is showing up first. I might create some divs to attach things to actually... 
-    $("main").append(dailyWeather);
-    // creating div for card body text for daily weather card
-    var dailyWeatherBody = $("<div>").addClass("card-body").attr("id", "daily-card");
-    // appending to dailyWeather for now
-    $(dailyWeather).append(dailyWeatherBody);
-    // creating div for forecast cards
-    var forecastDiv = $("<div>").addClass("row").attr("id", "forecast");
-    // appending to the main div
-    $("main").append(forecastDiv);
-    // creating title for forecast div and cards
-    var forecastTitle = $("<h2>").text("Five Day Forecast");
-    // appending
-    $("#forecast").append(forecastTitle)
-
-    // just checkin'
-    console.log("createElemnts ran");
-}
+// gets today's date
+var todaysDate = new Date().toLocaleDateString();
 
 // clicking the button should trigger local storage and ajax calls
-$("button").click(function () {
+$("#button-addon2").click(function () {
     $(this);
     // gets value from the search bar
     var savedCity = $("#data-list").val();
@@ -45,9 +24,7 @@ $("button").click(function () {
     addToList(savedCity);
     // to clear search box
     $("#data-list").val("");
-
 })
-
 
 // enter button handler - because of the way I wrote these functions I had to repeat everything. I would figure out a way to do this differently next time. 
 $(document).on('keypress', function (e) {
@@ -67,29 +44,42 @@ $(document).on('keypress', function (e) {
     }
 });
 
-function addToList(savedCity){
+// adds cities to list
+function addToList(savedCity) {
     var cityList = $("<button>").addClass("list-group-item list-group-item-action").text(savedCity)
     $("#save").append(cityList);
 }
 
+// function to generate elements dynamically
+function createElements() {
+    // creating card for daily weather forecasts
+    var dailyWeather = $("<div>").addClass("card row card-row");
+    // prepending to the body - for now - this is showing up first. I might create some divs to attach things to actually... 
+    $("main").append(dailyWeather);
+    // creating div for card body text for daily weather card
+    var dailyWeatherBody = $("<div>").addClass("card-body").attr("id", "daily-card");
+    // appending to dailyWeather for now
+    $(dailyWeather).append(dailyWeatherBody);
+    // creating div for forecast cards
+    var forecastDiv = $("<div>").addClass("row").attr("id", "forecast");
+    // appending to the main div
+    $("main").append(forecastDiv);
+    // creating title for forecast div and cards
+    var forecastTitle = $("<h2>").text("Five Day Forecast");
+    // appending
+    $("#forecast").append(forecastTitle)
+    // just checkin'
+    console.log("createElemnts ran");
+}
 
-
-
-// concats query urls
-var todaysDate = new Date().toLocaleDateString();
-
-
-// fucntion for daily weather
+// fucntion for daily weather ajax call
 function callWeather(savedCity) {
-
     $("#daily-card").empty();
     var dailyURL = "https://api.openweathermap.org/data/2.5/weather?q=" + savedCity + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
-
     $.ajax({
         url: dailyURL,
         method: "GET",
         dataType: "json"
-
     }).then(function (response) {
         console.log(response);
         // city name
@@ -106,30 +96,22 @@ function callWeather(savedCity) {
         dailyTitle.append(dailyImg);
         // append text
         $("#daily-card").append(dailyTitle, dailyTemp, dailyWind, dailyHumd);
-
     })
-
 };
+
+// function for 5 day forecast
 function callForecast(savedCity) {
-
-    
     var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + savedCity + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
-
     $.ajax({
         url: forecastURL,
         method: "GET",
         dataType: "json"
-
     }).then(function (response) {
         console.log(response);
-        // forecast date
 
         // for loop for dates and forecast info
-    
-       
         for (i = 1; i < 6; i++) {
-
-            // scrolled along the DOM to find this, hadn't used substring before, but it works!
+            // scrolled along the DOM to find this, hadn't used substring before, but it works! gets date
             var tomorrow = response.list[(i * 7)].dt_txt.substring(5, 10);
             // had to make colums so that the cards didn't just line up on top of each other. I bet that's what's wrong with my other dynamic elements. Might try that later. 
             var column = $("<div>").addClass("col-md-2")
@@ -146,7 +128,7 @@ function callForecast(savedCity) {
             var forecastTemp = $("<p>").text("Temp: " + response.list[(i * 7)].main.temp + "°F ");
             // append temps
             $("#forecast-card" + [i]).append(forecastTemp);
-            // 
+            // humidity
             var forecastHumd = response.list[(i * 7)].main.humidity;
             // append temps
             $("#forecast-card" + [i]).append("Humidity: " + forecastHumd + "%");
@@ -154,12 +136,8 @@ function callForecast(savedCity) {
             var forecastImg = $("<img>").addClass("title-img").attr("src", "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png")
             $(forecastTitle).append(forecastImg)
             console.log(forecastTemp)
-
         }
-
-
     })
-
 };
 
 
@@ -204,5 +182,5 @@ function callForecast(savedCity) {
     //  $(searchBar).append(searchBtn);
     // it works, just uneccessary
     // var tomorrow = new Date();
-        // tomorrow.setDate(new Date().getDate() + i);
-        // console.log(tomorrow)
+     // tomorrow.setDate(new Date().getDate() + i);
+     // console.log(tomorrow)
