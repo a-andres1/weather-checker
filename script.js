@@ -48,7 +48,7 @@ $("#button-addon2").click(function () {
     // creates variable for use in query URL
     var cityName = savedCity
     // concats query url
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6"
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
 
     console.log(queryURL);
     // call ajax function
@@ -63,10 +63,24 @@ $("#button-addon2").click(function () {
         //         xhr.withCredentials = true;
         //   },
         }).then(function (response) {
-            console.log(response.name);
+            console.log(response);
+            // city name
             var dailyTitle = $("<h2>").addClass("card-title").text(response.name);
-            // append to card
+            // append city name to card
             $(".card-body").append(dailyTitle);
+            // daily temp
+            var dailyTemp = $("<p>").addClass("card-text").text("Curent Temp: " + response.main.temp + " F");
+            // append temp
+            $(".card-body").append(dailyTemp);
+            // daily wind
+            var dailyWind = $("<p>").addClass("card-text").text("Wind Speed: " + response.wind.speed + " MPH");
+            // append wind
+            $(".card-body").append(dailyWind);
+            // daily humidity
+            var dailyHumd = $("<p>").addClass("card-text").text("Humidity: " + response.main.humidity + "%");
+            // append humidity
+            $(".card-body").append(dailyHumd);
+
            
         })
         
