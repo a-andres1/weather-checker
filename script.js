@@ -8,10 +8,12 @@ $(document).ready(function () {
 // function to generate elements dynamically
 function createElements() {
     // creating datalist
-    var searchedCities = $("<datalist>").attr("id", "datalistOptions");
+    var citiesList = $("<datalist>").attr("id", "datalistOptions");
     // will need to tell this to create options with values of the cities that have been entered. 
     // currently appended, since I don't know what this is going to look like, we'll leave it for now and once the list is work, we'll correct from there. 
-    $("aside").append(searchedCities);
+    $("aside").append(citiesList);
+    // list
+    var searchedCities = $("<option>")
     // creating card for daily weather forecasts
     var dailyWeather = $("<div>").addClass("card row");
     // prepending to the body - for now - this is showing up first. I might create some divs to attach things to actually... 
@@ -32,14 +34,30 @@ function createElements() {
     console.log("createElemnts ran");
 }
 
-// need to add keypress event
-// can I use $(this) for keypress events?
+
+
+// local storage
+$("#button-addon2").click(function () {
+    $(this);
+    // gets value from the search bar
+    var savedCity = $("#data-list").val();
+    console.log(savedCity);
+    // localStorage.setItem("save", savedCity);
+    // searchedCities.val(savedCity);
+    // creates variable for use in query URL
+    var cityName = savedCity
+    // concats query url
+    var queryURL = "api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6"
+
+    console.log(queryURL);
+})
 var savedText = $()
 
 
 // ajax calls go here
-// var cityName = 
-// var queryURL = "api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid={API key}"
+
+
+
 
 
 
