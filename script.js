@@ -29,7 +29,7 @@ function createElements() {
     var forecastTitle = $("<h2>").text("Five Day Forecast");
     // appending
     $("#forecast").append(forecastTitle)
-    
+
 
     console.log("createElemnts ran");
 }
@@ -91,27 +91,26 @@ $("#button-addon2").click(function () {
             console.log(response);
             // forecast date
 
-                // for loop
+            // for loop
 
-    for (i = 1; i < 6; i++) {
-    // tediously crawled across the DOM for this. Very proud. Printing date now. 
-        var tom2 = response.list[i].dt_txt.substring(0,10);
-        console.log(tom2);
-        
-        //  creating forecast elements
-        var column = $("<div>").addClass("col-md-2")
-        $("#forecast").append(column)
-        // create card and append
-        var forecastCard = $("<div>").addClass("card");
-    $(column).append(forecastCard);
-        //  // create card body and append
-         var forecastCardBody = $("<div>").addClass("card-body").attr("id", "forecast-card" + [i]);
-         $(forecastCard).append(forecastCardBody)
-         var forecastTitle = $("<h2>").addClass("card-title").text(tom2);
-         $("#forecast-card" + [i]).append(forecastTitle);
-       
-    }
-           
+            for (i = 1; i < 6; i++) {
+                // tediously crawled across the DOM for this. Very proud. Printing date now. 
+                var tom2 = response.list[i].dt_txt.substring(0, 10);
+                console.log(tom2);
+                //  creating forecast elements
+                var column = $("<div>").addClass("col-md-2")
+                $("#forecast").append(column)
+                // create card and append
+                var forecastCard = $("<div>").addClass("card");
+                $(column).append(forecastCard);
+                //  // create card body and append
+                var forecastCardBody = $("<div>").addClass("card-body").attr("id", "forecast-card" + [i]);
+                $(forecastCard).append(forecastCardBody)
+                var forecastTitle = $("<h2>").addClass("card-title").text(tom2);
+                $("#forecast-card" + [i]).append(forecastTitle);
+
+            }
+
 
         })
 
