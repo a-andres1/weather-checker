@@ -1,11 +1,10 @@
 .nav1{
     clear: both;
+    margin-bottom: 10px;
 }
 
 .main{
-    float: inherit;
+    float: left;
 }
 
-.nav1{
-    margin-bottom: 10px;
-}
+
