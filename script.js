@@ -29,13 +29,8 @@ function createElements() {
     var forecastTitle = $("<h2>").text("Five Day Forecast");
     // appending
     $("#forecast").append(forecastTitle)
-    // create card and append
-    var forecastCard = $("<div>").addClass("card").attr("style", "width: 18rem;");
-    $(forecastTitle).append(forecastCard);
-    // create card body and append
-    var forecastCardBody = $("<div>").addClass("card-body");
-    $(forecastCard).append(forecastCardBody)
-    // checking to make sure this function is running
+    
+
     console.log("createElemnts ran");
 }
 
@@ -55,6 +50,7 @@ $("#button-addon2").click(function () {
     var dailyURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
     var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
     var todaysDate = new Date().toLocaleDateString();
+
     // call ajax function
     callWeather();
     callForecast();
@@ -72,7 +68,7 @@ $("#button-addon2").click(function () {
             // get image for title
             var dailyImg = $("<img>").addClass("title-img").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png")
             // daily temp
-            var dailyTemp = $("<p>").addClass("card-text").text("Curent Temp: " + response.main.temp + " F");
+            var dailyTemp = $("<p>").addClass("card-text").text("Curent Temp: " + response.main.temp + " °F");
             // daily wind
             var dailyWind = $("<p>").addClass("card-text").text("Wind Speed: " + response.wind.speed + " MPH");
             // daily humidity
@@ -94,17 +90,28 @@ $("#button-addon2").click(function () {
         }).then(function (response) {
             console.log(response);
             // forecast date
-            var dailyTitle = $("<h2>").addClass("card-title").text(response.list[0].dt_txt);
-            $(".card-body").append(dailyTitle)
 
+                // for loop
 
-
-
-
-
-
-
-
+    for (i = 1; i < 6; i++) {
+    // tediously crawled across the DOM for this. Very proud. Printing date now. 
+        var tom2 = response.list[i].dt_txt.substring(0,10);
+        console.log(tom2);
+        
+        //  creating forecast elements
+        var column = $("<div>").addClass("col-md-2")
+        $("#forecast").append(column)
+        // create card and append
+        var forecastCard = $("<div>").addClass("card");
+    $(column).append(forecastCard);
+        //  // create card body and append
+         var forecastCardBody = $("<div>").addClass("card-body").attr("id", "forecast-card" + [i]);
+         $(forecastCard).append(forecastCardBody)
+         var forecastTitle = $("<h2>").addClass("card-title").text(tom2);
+         $("#forecast-card" + [i]).append(forecastTitle);
+       
+    }
+           
 
         })
 
@@ -113,6 +120,8 @@ $("#button-addon2").click(function () {
 
 
 })
+
+
 
 
 
@@ -165,3 +174,8 @@ var savedText = $()
     //  });
     //  // appends button
     //  $(searchBar).append(searchBtn);
+
+    // this worked, I just don't need it rn
+    // var tomorrow = new Date();
+        // tomorrow.setDate(new Date().getDate() + i);
+        // console.log(tomorrow)
