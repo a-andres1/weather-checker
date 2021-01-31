@@ -1,7 +1,6 @@
 // document.ready fucntion
 $(document).ready(function () {
     console.log("ready!");
-    createElements();
 });
 
 
@@ -32,12 +31,14 @@ function createElements() {
     $("#forecast").append(forecastTitle)
     // checking to make sure this function is running
     console.log("createElemnts ran");
+
 }
 
 
 
 // local storage
 $("#button-addon2").click(function () {
+    createElements();
     $(this);
     // gets value from the search bar
     var savedCity = $("#data-list").val();
@@ -47,11 +48,42 @@ $("#button-addon2").click(function () {
     // creates variable for use in query URL
     var cityName = savedCity
     // concats query url
-    var queryURL = "api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6"
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6"
 
     console.log(queryURL);
+    // call ajax function
+    callWeather();
+    function callWeather() {
+        $.ajax({
+            url: queryURL,
+            method: "GET",
+            dataType: "json"
+        //     crossDomain: true,
+        //     beforeSend: function(xhr){
+        //         xhr.withCredentials = true;
+        //   },
+        }).then(function (response) {
+            console.log(response.name);
+            var dailyTitle = $("<h2>").addClass("card-title").text(response.name);
+            // append to card
+            $(".card-body").append(dailyTitle);
+           
+        })
+        
+
+
+    };
 })
+
+function populateElements(){
+    // add info to the elements
+   
+}
+
+
+
 var savedText = $()
+
 
 
 // ajax calls go here
