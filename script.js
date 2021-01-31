@@ -29,11 +29,15 @@ function createElements() {
     var forecastTitle = $("<h2>").text("Five Day Forecast");
     // appending
     $("#forecast").append(forecastTitle)
+    // create card and append
+    var forecastCard = $("<div>").addClass("card").attr("style", "width: 18rem;");
+    $(forecastTitle).append(forecastCard);
+    // create card body and append
+    var forecastCardBody = $("<div>").addClass("card-body");
+    $(forecastCard).append(forecastCardBody)
     // checking to make sure this function is running
     console.log("createElemnts ran");
-
 }
-
 
 
 // local storage
@@ -47,48 +51,64 @@ $("#button-addon2").click(function () {
     // searchedCities.val(savedCity);
     // creates variable for use in query URL
     var cityName = savedCity
-    // concats query url
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
-
-    console.log(queryURL);
+    // concats query urls
+    var dailyURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
+    var forecastURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=6e582d888e364585113e2789fcc5b0e6&units=imperial"
+    var todaysDate = new Date().toLocaleDateString();
     // call ajax function
     callWeather();
+    callForecast();
+    // fucntion for daily weather
     function callWeather() {
         $.ajax({
-            url: queryURL,
+            url: dailyURL,
             method: "GET",
             dataType: "json"
-        //     crossDomain: true,
-        //     beforeSend: function(xhr){
-        //         xhr.withCredentials = true;
-        //   },
+
         }).then(function (response) {
             console.log(response);
             // city name
-            var dailyTitle = $("<h2>").addClass("card-title").text(response.name);
+            var dailyTitle = $("<h2>").addClass("card-title").text(response.name + " " + todaysDate);
+            // get image for title
+            var dailyImg = $("<img>").addClass("title-img").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png")
             // daily temp
             var dailyTemp = $("<p>").addClass("card-text").text("Curent Temp: " + response.main.temp + " F");
             // daily wind
             var dailyWind = $("<p>").addClass("card-text").text("Wind Speed: " + response.wind.speed + " MPH");
             // daily humidity
             var dailyHumd = $("<p>").addClass("card-text").text("Humidity: " + response.main.humidity + "%");
+            // append img
+            dailyTitle.append(dailyImg);
             // append text
-            $(".card-body").append(dailyTitle,dailyTemp,dailyWind,dailyHumd);
+            $(".card-body").append(dailyTitle, dailyTemp, dailyWind, dailyHumd);
 
-
-
-           
         })
-        
-
 
     };
-})
+    function callForecast() {
+        $.ajax({
+            url: forecastURL,
+            method: "GET",
+            dataType: "json"
 
-function populateElements(){
-    // add info to the elements
-   
-}
+        }).then(function (response) {
+            console.log(response);
+
+
+
+
+
+
+
+
+
+        })
+
+    };
+
+
+
+})
 
 
 
