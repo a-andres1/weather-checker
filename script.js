@@ -1,7 +1,13 @@
 // document.ready fucntion
 $(document).ready(function () {
     console.log("ready!");
+
 });
+var localCity = localStorage.getItem("save");
+createElements();
+callWeather(localCity);
+callForecast(localCity);
+addToList(localCity);
 
 // gets today's date
 var todaysDate = new Date().toLocaleDateString();
@@ -12,8 +18,7 @@ $("#button-addon2").click(function () {
     // gets value from the search bar
     var savedCity = $("#data-list").val();
     console.log(savedCity);
-    // localStorage.setItem("save", savedCity);
-
+    localStorage.setItem("save", savedCity);
     // var cityName = []
     // cityName = savedCity
     // console.log("city name " + cityName
@@ -33,7 +38,7 @@ $(document).on('keypress', function (e) {
     if (e.which == 13) {
         var savedCity = $("#data-list").val();
         console.log(savedCity);
-        // localStorage.setItem("save", savedCity);
+        localStorage.setItem("save", savedCity);
 
         $("main").empty();
         // calling functions
